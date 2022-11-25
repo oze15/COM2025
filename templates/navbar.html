@@ -1,0 +1,20 @@
+{% load static %}
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'todolist/logo_light_s.svg' %}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top"> 
+            toDoList
+        </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          {% with url_name=request.resolver_match.url_name %}
+            <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}"><i class="bi bi-house-fill"></i>&nbsp;&nbsp;&nbsp;Home</a>
+            
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+</nav>

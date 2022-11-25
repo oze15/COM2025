@@ -1,0 +1,16 @@
+$font: 'Inter', 'Arial', sans-serif;
+$color: #ffffff;
+
+body {
+    font-family: $font;
+    background-color: $color;
+}
+
+h1 {
+    // text-transform: uppercase;
+    font-weight:700;
+}
+
+.cen{
+    text-align: center;
+}
