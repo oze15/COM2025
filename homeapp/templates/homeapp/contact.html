@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block script %}
+<!-- <script type="text/javascript" src="{% static 'js/format.js' %}"></script> -->
+{% endblock script %}
+{% block title %}
+<title>Notes Contact</title>
+{% endblock title%}
+{% block content %}
+<h1>Send Feedback</h1>
+<h4>Don't like something? Let us know</h4>
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<div class="form-actions">
+<button type="submit" class="btn btn-primary">Send</button>
+</div>
+</form>
+{% endblock content %} 

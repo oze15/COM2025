@@ -131,3 +131,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 ]
+
+DEFAULT_FROM_EMAIL = "oe00205@surrey.ac.uk"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

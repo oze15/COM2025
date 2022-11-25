@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    # Any URLs with 'home/' are passed to homeapp app
-    path('home/', include('homeapp.urls')),
     path('admin/', admin.site.urls),
+    # Any URLs with '' are passed to homeapp app
+    path('', include('homeapp.urls')),
 ]
