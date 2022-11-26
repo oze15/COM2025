@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body>
+    <!-- <h1>{{ task.id }}</h1> -->
+    
+    <div class="card">
+    <div class="card-body">
+    <h1 class="card-title">{{ task.title }}</h1>
+    <!-- <hr> -->
+
+    <!-- <hr> -->
+    <p><i class="bi bi-calendar"></i>&nbsp;&nbsp;&nbsp;{{ task.due_at }}</p>
+    <p><i class="bi bi-tag-fill"></i>&nbsp;&nbsp;&nbsp;{{ task.due_at }}</p>
+    <p><i class="bi bi-check2-all"></i>&nbsp;&nbsp;&nbsp;{{ task.due_at }}</p>
+    <p class="card-text"> {{ task.description }}</p>
+    </div>
+    <div class="card-footer">
+        {{ task.updated_at }}
+    </div>
+    </div>
+    <br>
+    <input type="button" class="btn btn-secondary" onclick="location.href='{% url 'tasks_update' task.id %}';" value="Edit" />
+    <input type="button" class="btn btn-danger" onclick="location.href='{% url 'tasks_delete' task.id %}';" value="Delete" />
+</body>
+{% endblock content %}

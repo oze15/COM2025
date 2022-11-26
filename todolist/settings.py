@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'taskapp.apps.TaskappConfig',
     'homeapp.apps.HomeappConfig',
     'sass_processor',
     'django.contrib.admin',

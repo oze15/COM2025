@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Tasks</h1>
+<h4>All categories</h4>
+<br>
+<a class="btn btn-primary" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New</a>
+<br>
+<br>
+<div class="table-responsive">
+<table class="table table-sm table-hover table-borderless">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Due</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    {% for task in task_list %}
+    <tr>
+        <td>
+            <i class="bi bi-sticky"></i>
+                &nbsp;
+            <a href="{% url 'tasks_detail' task.id %}">
+                {{ task.title | truncatechars:25}}</a>
+        </td>
+        <td>
+            Status
+        </td>
+        <td>
+            {{task.due_at}}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+<!-- <hr/> -->
+{% endblock content %}

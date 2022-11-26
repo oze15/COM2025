@@ -12,6 +12,7 @@
         <div class="navbar-nav">
           {% with url_name=request.resolver_match.url_name %}
             <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}"><i class="bi bi-house-fill"></i>&nbsp;&nbsp;&nbsp;Home</a>
+            <a class="nav-link {% if url_name == 'tasks_index' %}active{% endif %}" href="{% url 'tasks_index' %}"><i class="bi bi-stickies-fill"></i>&nbsp;&nbsp;&nbsp;Tasks</a>
             <a class="nav-link {% if url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}"><i class="bi bi-envelope-fill"></i>&nbsp;&nbsp;&nbsp;Feedback</a>
           {% endwith %}
         </div>
