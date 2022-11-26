@@ -9,9 +9,11 @@
  
     <!-- Using the formset -->
     {{ form.as_p }}
- 
-    <input type="submit" value="Done" class="btn btn-primary">
+    <div class="d-grid gap-2 d-md-block">
+        <input type="submit" value="Done" class="btn btn-primary">
     <!-- button to navigate back to previous page -->
-    <input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel" />
+        <input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel" />
+    </div>
+    
 </form>
 {% endblock content %}

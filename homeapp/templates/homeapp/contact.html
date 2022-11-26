@@ -14,7 +14,9 @@
 {% csrf_token %}
 {{ form.as_p }}
 <div class="form-actions">
-<button type="submit" class="btn btn-primary">Send</button>
+    <div class="d-grid gap-2 d-md-block">
+        <button type="submit" class="btn btn-primary">Send</button>
+    </div>
 </div>
 </form>
 {% endblock content %} 

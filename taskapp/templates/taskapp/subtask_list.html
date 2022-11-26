@@ -6,9 +6,9 @@
 <ul class="list-group list-group-flush">
     {% for subtask in subtask_list %}
     {% if subtask.complete %}
-    <li class="list-group-item complete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'>{{subtask.title}}
+    <li class="list-group-item complete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'><i class="bi bi-check-square-fill"></i>&nbsp;&nbsp;&nbsp;{{subtask.title}}
     {% else %}
-    <li class="list-group-item incomplete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'>{{subtask.title}}
+    <li class="list-group-item incomplete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'><i class="bi bi-square"></i>&nbsp;&nbsp;&nbsp;{{subtask.title}}
     {% endif %}
     <button class="btn btn-close text-right" style="float:right;" onClick='event.stopPropagation();delete_t({{ subtask.id }});' type='button'></button>
     {% endfor %}

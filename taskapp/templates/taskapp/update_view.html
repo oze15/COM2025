@@ -6,7 +6,10 @@
     {% csrf_token %}
     <!-- Using the formset -->
     {{ form.as_p }}
-    <input type="submit" value="Save changes" class="btn btn-primary">
-    <input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel" />
+    <div class="d-grid gap-2 d-md-block">
+        <input type="submit" value="Save changes" class="btn btn-primary">
+        <input type="button" class="btn btn-secondary" onclick="history.back()" value="Cancel" />
+    </div>
+    
 </form>
 {% endblock content %}

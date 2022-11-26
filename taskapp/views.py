@@ -21,15 +21,15 @@ def index_view(request):
     
     return render(request, "taskapp/index.html", context)
 
-# pass id attribute from urls
-def detail_view(request, nid):
+# # pass id attribute from urls
+# def detail_view(request, nid):
     
-    context = {}
+#     context = {}
     
-    # add the dictionary during initialization
-    context["task"] = get_object_or_404(Task, pk=nid)
+#     # add the dictionary during initialization
+#     context["task"] = get_object_or_404(Task, pk=nid)
     
-    return render(request, "taskapp/detail_view.html", context)
+#     return render(request, "taskapp/detail_view.html", context)
 
 def create_view(request):
     context ={}
@@ -62,7 +62,8 @@ def update_view(request, nid):
         form.save()
         messages.add_message(request, messages.SUCCESS, 'Task Updated')
 
-        return redirect('tasks_detail', nid=nid)
+        # causes an error
+        return redirect('tasks_detail', pk = nid)
     
     # add form dictionary to context
     context["form"] = form

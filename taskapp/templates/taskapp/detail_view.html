@@ -17,13 +17,19 @@
     </div>
     <div class="card-body">
         {% include 'taskapp/subtask_list.html' with nid=task.id %}
+        <br>
+        <div class="d-grid gap-2 d-md-block">
+            <input type="button" class="btn btn-primary" onclick="location.href='{% url 'create_subtask' task.id %}';" value="Add Subtask..." />
+        </div>
     </div>
     <div class="card-footer">
         {{ task.updated_at }}
     </div>
     </div>
     <br>
-    <input type="button" class="btn btn-secondary" onclick="location.href='{% url 'tasks_update' task.id %}';" value="Edit" />
-    <input type="button" class="btn btn-danger" onclick="location.href='{% url 'tasks_delete' task.id %}';" value="Delete" />
+    <div class="d-grid gap-2 d-md-block">
+        <input type="button" class="btn btn-secondary" onclick="location.href='{% url 'tasks_update' task.id %}';" value="Edit" />
+        <input type="button" class="btn btn-danger" onclick="location.href='{% url 'tasks_delete' task.id %}';" value="Delete" />
+    </div>
 </body>
 {% endblock content %}

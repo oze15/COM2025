@@ -3,7 +3,10 @@
 <h1>{{task_count}} tasks</h1>
 <h4>in all categories</h4>
 <br>
-<a class="btn btn-primary" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New</a>
+<div class="d-grid gap-2 d-md-block">
+    <a class="btn btn-primary" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a>
+</div>
+
 <br>
 <br>
 <div class="table-responsive">
@@ -19,7 +22,17 @@
     {% for task in task_list %}
     <tr>
         <td>
-            <i class="bi bi-check2-circle"></i>
+            {% if task.status == 'In progress' %}
+            <i class="bi bi-square-half"></i>
+            {% elif task.status == 'Urgent' %}   
+            <i class="bi bi-arrow-up-square"></i>
+            {% elif task.status == 'Complete' %}   
+            <i class="bi bi-check-square-fill"></i>
+            {% elif task.status == 'Delayed' %}   
+            <i class="bi bi-x-square"></i>
+            {% else %}
+            <i class="bi bi-square"></i>
+            {% endif %}
                 &nbsp;
             <a href="{% url 'tasks_detail' task.id %}">
                 {{ task.title | truncatechars:20}}</a>

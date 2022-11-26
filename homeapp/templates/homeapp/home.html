@@ -9,7 +9,9 @@
 <br>
 <!-- <a class="btn btn-primary btn" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a> -->
 
-<div class="card">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+
+<div class="card text-white bg-secondary mb-3">
     <div class="card-body">
     <h1 class="card-title">{{ task_count }}</h1>
     <!-- <hr> -->
@@ -18,11 +20,12 @@
     </div>
     <div class="card-footer">
         Total Tasks (dynamic!)
+        <!-- <button class="btn btn-outline text-right" style="float:right;" onClick='#' type='button'><i class="bi bi-square"></i></button> -->
     </div>
 </div>
 
-<div class="card">
-    <div class="card-body">
+<div class="card text-white bg-info mb-3">
+    <div class="card-body ">
     <h1 class="card-title">1</h1>
     <!-- <hr> -->
     <!-- <p class="card-text">Text</p> -->
@@ -33,7 +36,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card text-white bg-danger mb-3">
     <div class="card-body">
     <h1 class="card-title">3</h1>
     <!-- <hr> -->
@@ -44,7 +47,7 @@
         Urgent (not yet dynamic)
     </div>
 </div>
-
+</div>
 
 
 {% endblock content %}
