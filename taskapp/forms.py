@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task
+from .models import Task, SubTask
 # creating a form
 
 Category_Choices = [
@@ -58,4 +58,19 @@ class TaskForm(forms.ModelForm):
 
 
 
+}
+
+# We need a form. We’ll set the task id automatically depending on the url, so let’s hide that field
+class SubTaskForm(forms.ModelForm):
+# create meta class
+    class Meta:
+    # specify model to be used
+        model = SubTask
+        fields = ['title', 'complete', 'task']
+        widgets = {
+            'title': forms.TextInput(attrs={
+            'class': 'formfield',
+            'placeholder': 'Subtask Title',
+            }),
+        'task': forms.HiddenInput(),
 }

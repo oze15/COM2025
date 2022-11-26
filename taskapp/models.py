@@ -12,3 +12,14 @@ class Task(models.Model):
 
     class Meta:
         indexes = [models.Index(fields=['title']), ]
+
+class SubTask(models.Model):
+    title = models.CharField(max_length=128)
+    complete = models.BooleanField(default=False)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+
+    # String method for a subtask will return title
+    # This will make them easier to manage in the admin pages
+    def __str__(self):
+        return self.title

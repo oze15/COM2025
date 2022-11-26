@@ -1,0 +1,20 @@
+{% load static %}
+<script type="text/javascript" src="{% static 'js/notesapp.js' %}"></script>
+
+<!-- <h3>Tasks</h3> -->
+<div class="card">
+<ul class="list-group list-group-flush">
+    {% for subtask in subtask_list %}
+    {% if subtask.complete %}
+    <li class="list-group-item complete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'>{{subtask.title}}
+    {% else %}
+    <li class="list-group-item incomplete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'>{{subtask.title}}
+    {% endif %}
+    <button class="btn btn-close text-right" style="float:right;" onClick='event.stopPropagation();delete_t({{ subtask.id }});' type='button'></button>
+    {% endfor %}
+    
+</ul>
+</div>
+<!--We’re not extending base.html
+here because we’ll include this template in our notes
+detail view which does extend the base-->

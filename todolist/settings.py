@@ -135,3 +135,7 @@ STATICFILES_FINDERS = [
 
 DEFAULT_FROM_EMAIL = "oe00205@surrey.ac.uk"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+STATICFILE_DIRS = [
+    BASE_DIR / "taskapp/static"
+]

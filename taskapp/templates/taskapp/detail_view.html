@@ -15,6 +15,9 @@
     <p><i class="bi bi-check2-all"></i>&nbsp;&nbsp;&nbsp;{{ task.status }}</p>
     <p class="card-text"> {{ task.description }}</p>
     </div>
+    <div class="card-body">
+        {% include 'taskapp/subtask_list.html' with nid=task.id %}
+    </div>
     <div class="card-footer">
         {{ task.updated_at }}
     </div>

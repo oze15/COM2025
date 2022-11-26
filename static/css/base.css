@@ -8,4 +8,10 @@ h1 {
 .cen {
   text-align: center; }
 
+.complete {
+  background-color: #19875450; }
+
+.incomplete {
+  background-color: #dc354550; }
+
 /*# sourceMappingURL=base.css.map */
