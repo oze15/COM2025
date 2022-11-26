@@ -5,10 +5,17 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from .forms import ContactForm
 from django.contrib import messages
+from taskapp.models import Task
+import datetime
 
 # Create your views here.
 def home(request):
     context = {}
+
+    context["task_list"] = Task.objects.all()
+    context["task_count"] = Task.objects.all().count
+    context["today"] = datetime.date.today()
+
     return render(request, 'homeapp/home.html', context)
 
 def contact(request):

@@ -4,19 +4,20 @@
 {% endblock title%}
 {% block content %}
 
-<h1>25/11/2022</h1>
-<h4>Hi. You have 13 tasks. 3 of these are overdue.</h4>
+<h1>{{ today }}</h1>
+<h4>Hi. You have {{ task_count }} tasks. of these are overdue.</h4>
 <br>
+<!-- <a class="btn btn-primary btn" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a> -->
 
 <div class="card">
     <div class="card-body">
-    <h1 class="card-title">13</h1>
+    <h1 class="card-title">{{ task_count }}</h1>
     <!-- <hr> -->
     <!-- <p class="card-text">Text</p> -->
     <!-- <hr> -->
     </div>
     <div class="card-footer">
-        Total Tasks
+        Total Tasks (dynamic!)
     </div>
 </div>
 
@@ -28,7 +29,7 @@
     <!-- <hr> -->
     </div>
     <div class="card-footer">
-        In Progress
+        In Progress (not yet dynamic)
     </div>
 </div>
 
@@ -40,7 +41,7 @@
     <!-- <hr> -->
     </div>
     <div class="card-footer">
-        Urgent
+        Urgent (not yet dynamic)
     </div>
 </div>
 

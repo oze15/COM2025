@@ -12,6 +12,7 @@ def index_view(request):
     
     # add the dictionary during initialization
     context["task_list"] = Task.objects.all()
+    context["task_count"] = Task.objects.all().count
     
     return render(request, "taskapp/index.html", context)
 
