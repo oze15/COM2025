@@ -3,5 +3,12 @@
       <a class="btn btn-primary btn-sm" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a>
       <br><br>
       <p>toDoList v0.0.1</p>
+      {% if user.is_authenticated %}
+        <p>Logged in as {{user.username}}
+        (<a href="{% url 'logout' %}">Logout</a>)</p>
+        {% else %}
+        <p> No account? <a href="{% url 'signup_user' %}">Signup</a> </p>
+        <p> <a href="{% url 'login' %}">Login</a> </p>
+      {% endif%}
     </div>
   </footer>

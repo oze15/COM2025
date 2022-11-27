@@ -3,8 +3,10 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from .forms import ContactForm
+from .forms import ContactForm, UserCreationWithEmailForm
 from django.contrib import messages
+from django.views.generic import CreateView
+from django.contrib.auth.models import User
 from taskapp.models import Task
 import datetime
 
@@ -39,3 +41,10 @@ def contact(request):
             messages.add_message(request, messages.ERROR, 'Invalid Form Data; Message Not Sent') 
 
     return render(request, 'homeapp/contact.html', {"form": form})
+
+class RegisterUser(CreateView):
+    model = User
+    form_class = UserCreationWithEmailForm
+    template_name = 'homeapp/register.html'
+    
+    success_url = reverse_lazy('login')

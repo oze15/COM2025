@@ -25,7 +25,7 @@ class TaskForm(forms.ModelForm):
     # specify model to be used
         model = Task
         
-        fields = ['title', 'description', 'category',  'status', 'due_at']
+        fields = ['title', 'description', 'category',  'status', 'due_at', 'author']
 
         widgets = {
             
@@ -55,6 +55,7 @@ class TaskForm(forms.ModelForm):
             'class': 'form-control',
             # 'placeholder': 'Task Title',
             }),
+            'author': forms.HiddenInput(),
 
 
 

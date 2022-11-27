@@ -9,16 +9,29 @@ from .forms import TaskForm, SubTaskForm
 from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
 
+
+# is @login_required needed?
+def is_admin(user):
+    return user.groups.filter(name='TasksAdminUsers').exists() or user.is_superuser
+
 # Create your views here.
+@login_required
 def index_view(request):
     # dictionary for initial data with
     # field names as keys
     context ={}
     
     # add the dictionary during initialization
-    context["task_list"] = Task.objects.all()
-    context["task_count"] = Task.objects.all().count
+    # context["task_list"] = Task.objects.all()
+    # context["task_count"] = Task.objects.all().count
     
+    if is_admin(request.user):
+        context["task_list"] = Task.objects.all()
+        context["task_count"] = Task.objects.all().count
+    else:
+        context["task_list"] = Task.objects.filter(author=request.user)
+        context["task_count"] = Task.objects.filter(author=request.user).count
+
     return render(request, "taskapp/index.html", context)
 
 # # pass id attribute from urls
@@ -31,9 +44,10 @@ def index_view(request):
     
 #     return render(request, "taskapp/detail_view.html", context)
 
+@login_required
 def create_view(request):
     context ={}
-    form = TaskForm(request.POST or None)
+    form = TaskForm(request.POST or None, initial={'author': request.user})
     if(request.method == 'POST'):
         if form.is_valid():
             form.save()
@@ -47,11 +61,15 @@ def create_view(request):
     context['form']= form
     return render(request, "taskapp/create_view.html", context)
 
+@login_required
 def update_view(request, nid):
     context ={}
     
     # fetch the object related to passed id
     obj = get_object_or_404(Task, id = nid)
+
+    if(obj.author != request.user and not(is_admin(request.user))):
+        raise Http404
     
     # pass the object as instance in form
     form = TaskForm(request.POST or None, instance = obj)
@@ -70,10 +88,14 @@ def update_view(request, nid):
     
     return render(request, "taskapp/update_view.html", context)
 
-
+@login_required
 def delete_view(request, nid):
     # fetch the object related to passed id
     obj = get_object_or_404(Task, id = nid)
+
+    if(obj.author != request.user and not(is_admin(request.user))):
+        raise PermissionDenied()
+
     # delete object
     obj.delete()
     messages.add_message(request, messages.SUCCESS, 'Task Deleted')
@@ -81,7 +103,7 @@ def delete_view(request, nid):
     return redirect('tasks_index')
 
 
-class CreateSubTaskView(CreateView):
+class CreateSubTaskView(LoginRequiredMixin, CreateView):
     model = SubTask
     form_class = SubTaskForm
 
@@ -96,8 +118,8 @@ class CreateSubTaskView(CreateView):
     '''
     def get_initial(self): # set the initial value of our task field
         task = Task.objects.get(id=self.kwargs['nid'])
-        # if(self.request.user != task.author and not(is_admin(self.request.user))):
-        #     raise PermissionDenied()
+        if(self.request.user != task.author and not(is_admin(self.request.user))):
+            raise PermissionDenied()
             
         return {'task': task}
         
@@ -111,7 +133,7 @@ class CreateSubTaskView(CreateView):
 
     --> followed 
     '''
-class TaskDetailView(DetailView):
+class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'taskapp/detail_view.html'
     
@@ -123,20 +145,20 @@ class TaskDetailView(DetailView):
         context['task'] = task
 
         # get the task referred to by pk in the url
-        context['subtask_list'] = SubTask.objects.filter(task__id=self.kwargs['pk'])
+        ## context['subtask_list'] = SubTask.objects.filter(task__id=self.kwargs['pk'])
         # # context['task'] = Task.objects.get(id=self.kwargs['pk'])
 
-        # if(self.request.user == task.author or is_admin(self.request.user)):
+        if(self.request.user == task.author or is_admin(self.request.user)):
             
-        #     #  get all the subtasks associated with that task
-        #     context['subtask_list'] = SubTask.objects.filter(task__id=self.kwargs['pk'])
-        # else:
-        #     raise PermissionDenied()
+            #  get all the subtasks associated with that task
+            context['subtask_list'] = SubTask.objects.filter(task__id=self.kwargs['pk'])
+        else:
+            raise PermissionDenied()
 
         #  return a context dictionary containing this information
         return context
 
-class CompleteSubTaskView(View):
+class CompleteSubTaskView(LoginRequiredMixin, View):
     def get(self, request):
         # Get the subtask id from the get parameters
         tid = request.GET.get('subtask_id')
@@ -144,8 +166,8 @@ class CompleteSubTaskView(View):
 
         task = subtask.task
 
-        # if(self.request.user != task.author and not(is_admin(self.request.user))):
-        #     raise PermissionDenied()
+        if(self.request.user != task.author and not(is_admin(self.request.user))):
+            raise PermissionDenied()
 
         # Get the subtask and toggle completion
         subtask.complete = not(subtask.complete)
@@ -153,7 +175,7 @@ class CompleteSubTaskView(View):
         # Send a JSON response
         return JsonResponse({'complete': subtask.complete, 'tid': tid}, status=200)
 
-class DeleteSubTaskView(View):
+class DeleteSubTaskView(LoginRequiredMixin, View):
     def get(self, request):
         # Get the subtask id from the get parameters
         tid = request.GET.get('subtask_id')
@@ -162,8 +184,8 @@ class DeleteSubTaskView(View):
 
             task = subtask.task
 
-            # if(self.request.user != task.author and not(is_admin(self.request.user))):
-            #     raise PermissionDenied()
+            if(self.request.user != task.author and not(is_admin(self.request.user))):
+                raise PermissionDenied()
             
         except SubTask.DoesNotExist:
             # Get the subtask and fail gracefully if not
