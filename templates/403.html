@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="text-center">
+<h1>You can't go there!</h1>
+<p>You can only see your own tasks and subtasks.</p>
+<img src="{% static 'todolist/undraw_notify_re_65on.svg' %}" alt="403 error image" class="img-fluid text-center"> 
+</div>
+{% endblock content %}

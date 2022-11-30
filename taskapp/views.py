@@ -62,7 +62,7 @@ def update_view(request, nid):
     obj = get_object_or_404(Task, id = nid)
 
     if(obj.author != request.user and not(is_admin(request.user))):
-        raise Http404
+        raise PermissionDenied()
     
     # pass the object as instance in form
     form = TaskForm(request.POST or None, instance = obj)

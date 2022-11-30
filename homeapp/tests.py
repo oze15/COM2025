@@ -40,3 +40,19 @@ class HomePageTests(TestCase):
     
     
 #   Logged in tests
+    def test_homepage_logged_in(self):
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200)
+
+        # NAVBAR TEST
+        # When there is no logged in user, the tasks link in the navbar should not be shown
+        # so if is not seen then we know the logic in the navbar is fine
+        
+        
+        # MAIN BODY TEST
+        # This is part of the jumbotron style div that is shown only when not logged in
+        
+        # Another part of the jumbotron style div
+        
+        # FOOTER TEST
+        # Test 
