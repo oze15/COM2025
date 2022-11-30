@@ -1,20 +1,23 @@
 {% load static %}
+<!-- Embedded in task detail -->
 <script type="text/javascript" src="{% static 'js/notesapp.js' %}"></script>
 
 <!-- <h3>Tasks</h3> -->
-<div class="card">
-<ul class="list-group list-group-flush">
+{% if subtask_list_size > 0 %}
+<div class="list-group">
+    
     {% for subtask in subtask_list %}
     {% if subtask.complete %}
-    <li class="list-group-item complete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'><i class="bi bi-check-square-fill"></i>&nbsp;&nbsp;&nbsp;{{subtask.title}}
+    <a class="list-group-item list-group-item-action list-group-item-success" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'><i class="bi bi-check-circle-fill" id="tid_{{subtask.id}}_i"></i>&nbsp;&nbsp;&nbsp;{{subtask.title}}
     {% else %}
-    <li class="list-group-item incomplete" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'><i class="bi bi-square"></i>&nbsp;&nbsp;&nbsp;{{subtask.title}}
+    <a class="list-group-item list-group-item-action list-group-item-danger" id="tid_{{subtask.id}}" onClick='togglecomplete({{ subtask.id }})'><i class="bi bi-circle" id="tid_{{subtask.id}}_i"></i>&nbsp;&nbsp;&nbsp;{{subtask.title}}
     {% endif %}
-    <button class="btn btn-close text-right" style="float:right;" onClick='event.stopPropagation();delete_t({{ subtask.id }});' type='button'></button>
+    <button class="btn btn-close text-right" style="float:right;" onClick='event.stopPropagation();delete_t({{ subtask.id }});' type='button'></button></a>
     {% endfor %}
     
-</ul>
 </div>
+<br>
+{% endif %}
 <!--We’re not extending base.html
-here because we’ll include this template in our notes
+here because we’ll include this template in our tasks
 detail view which does extend the base-->

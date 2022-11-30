@@ -4,50 +4,78 @@
 {% endblock title%}
 {% block content %}
 
-<h1>{{ today }}</h1>
-<h4>Hi. You have {{ task_count }} tasks. of these are overdue.</h4>
-<br>
-<!-- <a class="btn btn-primary btn" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a> -->
+<!-- Display dashboard if user is logged in -->
+{% if user.is_authenticated %}
+    <h1>{{ today|date:"SHORT_DATE_FORMAT" }}</h1>
+    <!-- Add message with num of overdue -->
+    <h4>Hi {{user.username}}. You have {{ task_count }} task{{ task_count|pluralize }}.</h4>
+    <br>
+    <!-- <a class="btn btn-primary btn" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a> -->
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+    <div class="col-sm">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+            <h1 class="card-title display-1 fw-bold">{{ task_count_delayed }}
+                <span style="float: right;"><i class="bi bi-clock"></i></span></h1>
+            <!-- <p class="card-text">Text</p> -->
+            </div>
+            <div class="card-footer">
+                Delayed
+                <!-- <button class="btn btn-outline text-right" style="float:right;" onClick='#' type='button'><i class="bi bi-square"></i></button> -->
+            </div>
+        </div>
+    </div>
 
-<div class="card text-white bg-secondary mb-3">
-    <div class="card-body">
-    <h1 class="card-title">{{ task_count }}</h1>
-    <!-- <hr> -->
-    <!-- <p class="card-text">Text</p> -->
-    <!-- <hr> -->
+    <div class="col-sm">
+    <div class="card text-white bg-info mb-3">
+        <div class="card-body ">
+        <h1 class="card-title display-1 fw-bold">{{ task_count_in_progress }}
+            <span style="float: right;"><i class="bi bi-circle-half"></i></span></h1>
+        <!-- <p class="card-text">Text</p> -->
+        </div>
+        <div class="card-footer">
+            In Progress
+        </div>
     </div>
-    <div class="card-footer">
-        Total Tasks (dynamic!)
-        <!-- <button class="btn btn-outline text-right" style="float:right;" onClick='#' type='button'><i class="bi bi-square"></i></button> -->
     </div>
-</div>
 
-<div class="card text-white bg-info mb-3">
-    <div class="card-body ">
-    <h1 class="card-title">1</h1>
-    <!-- <hr> -->
-    <!-- <p class="card-text">Text</p> -->
-    <!-- <hr> -->
+    <div class="col-sm">
+    <div class="card text-white bg-danger mb-3">
+        <div class="card-body">
+        <h1 class="card-title display-1 fw-bold">{{ task_count_urgent }}
+            <span style="float: right;"><i class="bi bi-arrow-up-circle"></i></span></h1>
+        <!-- <p class="card-text">Text</p> -->
+        </div>
+        <div class="card-footer">
+            Urgent
+        </div>
     </div>
-    <div class="card-footer">
-        In Progress (not yet dynamic)
     </div>
-</div>
 
-<div class="card text-white bg-danger mb-3">
-    <div class="card-body">
-    <h1 class="card-title">3</h1>
-    <!-- <hr> -->
-    <!-- <p class="card-text">Text</p> -->
-    <!-- <hr> -->
+    <div class="col-sm">
+        <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+            <h1 class="card-title display-1 fw-bold">{{ task_count_not_started }}
+                <span style="float: right;"><i class="bi bi-circle"></i></span></h1>
+            <!-- <p class="card-text">Text</p> -->
+            </div>
+            <div class="card-footer">
+                Not started
+            </div>
     </div>
-    <div class="card-footer">
-        Urgent (not yet dynamic)
     </div>
-</div>
-</div>
-
-
+    </div>
+<!-- Otherwise display Call-to-action button and promo text -->
+    {% else %}
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">The only task management solution.</h1>
+          <p class="col-md-8 fs-4">
+            toDoList is a brand new task management app made for the 21st century human.
+        </p>
+          <a class="btn btn-primary btn-lg" type="button" href="{% url 'signup_user' %}">Get started</a>
+        </div>
+    </div>
+{% endif%}
 {% endblock content %}

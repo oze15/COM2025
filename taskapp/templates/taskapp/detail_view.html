@@ -1,29 +1,45 @@
 {% extends "base.html" %}
+<!-- This page is the Read operation from CRUD for the Task model. -->
 {% block content %}
 
 <body>
-    <!-- <h1>{{ task.id }}</h1> -->
-    
+    <!-- 
+        Wrapped inside a Bootstrap card, the detail view contains the due date, status, and category
+        for a Task, as well as the title and description
+
+        Other fields, like created, and id are hidden as they do not need to be seen by the end user
+    -->
     <div class="card">
     <div class="card-body">
     <h1 class="card-title">{{ task.title }}</h1>
     <!-- <hr> -->
 
     <!-- <hr> -->
-    <p><i class="bi bi-calendar"></i>&nbsp;&nbsp;&nbsp;{{ task.due_at }}</p>
-    <p><i class="bi bi-tag-fill"></i>&nbsp;&nbsp;&nbsp;{{ task.category }}</p>
-    <p><i class="bi bi-check2-all"></i>&nbsp;&nbsp;&nbsp;{{ task.status }}</p>
-    <p class="card-text"> {{ task.description }}</p>
+    <p><i class="bi bi-calendar"></i>&nbsp;&nbsp;&nbsp;{{ task.due_at|date:"SHORT_DATE_FORMAT" }}</p>
+    <p><i class="bi bi-folder2"></i>&nbsp;&nbsp;&nbsp;{{ task.category }}</p>
+    <p>
+        {% if task.status == 'In progress' %}
+            <i class="bi bi-circle-half"></i>
+            {% elif task.status == 'Urgent' %}   
+            <i class="bi bi-arrow-up-circle"></i>
+            {% elif task.status == 'Complete' %}   
+            <i class="bi bi-check-circle-fill"></i>
+            {% elif task.status == 'Delayed' %}   
+            <i class="bi bi-clock"></i>
+            {% else %}
+            <i class="bi bi-circle"></i>
+        {% endif %}
+        &nbsp;&nbsp;{{ task.status }}</p>
+    <p class="card-text"> {{ task.description|linebreaks }}</p>
     </div>
     <div class="card-body">
         {% include 'taskapp/subtask_list.html' with nid=task.id %}
-        <br>
         <div class="d-grid gap-2 d-md-block">
             <input type="button" class="btn btn-primary" onclick="location.href='{% url 'create_subtask' task.id %}';" value="Add Subtask..." />
         </div>
     </div>
     <div class="card-footer">
-        {{ task.updated_at }}
+        {{ task.updated_at|date:"d/m/Y H:i:s" }}
     </div>
     </div>
     <br>

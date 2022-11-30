@@ -140,5 +140,7 @@ STATICFILE_DIRS = [
     BASE_DIR / "taskapp/static"
 ]
 
+# On login, redirect to the notes index
 LOGIN_REDIRECT_URL = "/tasks/"
+# On logout, redirect to the homepage 
 LOGOUT_REDIRECT_URL = "/"

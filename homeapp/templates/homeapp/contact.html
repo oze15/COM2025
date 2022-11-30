@@ -4,15 +4,17 @@
 <!-- <script type="text/javascript" src="{% static 'js/format.js' %}"></script> -->
 {% endblock script %}
 {% block title %}
-<title>Notes Contact</title>
+<title>Feedback</title>
 {% endblock title%}
 {% block content %}
 <h1>Send Feedback</h1>
 <h4>Don't like something? Let us know.</h4>
 <br>
 <form method="post">
-{% csrf_token %}
-{{ form.as_p }}
+<!-- Security token (Cross Site Request Forgery protection) -- https://docs.djangoproject.com/en/4.1/ref/csrf/ -->
+    {% csrf_token %}
+<!-- Render Django form as paragraph -->
+{{ form.as_p }} 
 <div class="form-actions">
     <div class="d-grid gap-2 d-md-block">
         <button type="submit" class="btn btn-primary">Send</button>

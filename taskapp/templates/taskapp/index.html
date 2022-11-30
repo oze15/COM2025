@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
+<!-- 
+    Will eventually be one of the most important pages,
+    currently displays the total number of tasks at the top
+    as well as a category indicator
+
+    A prominent responsive new task button follows it
+
+    The table contains an indicator of a tasks current status,
+    the title, status, and due date.
+-->
 {% block content %}
 <h1>{{task_count}} tasks</h1>
+<!-- Could eventually replace with variable that displays the category filtered -->
 <h4>in all categories</h4>
 <br>
 <div class="d-grid gap-2 d-md-block">
@@ -8,45 +19,119 @@
 </div>
 
 <br>
-<br>
+
+<!-- hide on screens smaller than lg -->
+<div class="d-none d-md-block">
 <div class="table-responsive">
-<table class="table table-sm table-hover table-borderless">
+<table class="table table-hover" style="border-color: white;">
     <thead>
     <tr>
-        <th>Title</th>
+        <th><i class="bi bi-square-fill text-white"></i>&nbsp;&nbsp;&nbsp;Title</th>
         <th>Status</th>
         <th>Due</th>
+        <th>How soon is that?</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
-    {% for task in task_list %}
+    {% for task in task_list|dictsort:"due_at" %}
     <tr>
         <td>
             {% if task.status == 'In progress' %}
-            <i class="bi bi-square-half"></i>
+            <i class="bi bi-circle-half"></i>
             {% elif task.status == 'Urgent' %}   
-            <i class="bi bi-arrow-up-square"></i>
+            <i class="bi bi-arrow-up-circle"></i>
             {% elif task.status == 'Complete' %}   
-            <i class="bi bi-check-square-fill"></i>
+            <i class="bi bi-check-circle-fill"></i>
             {% elif task.status == 'Delayed' %}   
-            <i class="bi bi-x-square"></i>
+            <i class="bi bi-clock"></i>
             {% else %}
-            <i class="bi bi-square"></i>
+            <i class="bi bi-circle"></i>
             {% endif %}
                 &nbsp;
             <a href="{% url 'tasks_detail' task.id %}">
                 {{ task.title | truncatechars:20}}</a>
         </td>
-        <td>
-            {{task.status}}
+        <td class="text-white 
+            {% if task.status == 'In progress' %}
+            bg-info
+            {% elif task.status == 'Urgent' %}   
+            bg-danger
+            {% elif task.status == 'Complete' %}   
+            bg-success
+            {% elif task.status == 'Delayed' %}   
+            bg-warning
+            {% else %}
+            bg-secondary
+            {% endif %}
+            ">{{task.status}}
         </td>
-        <td>
-            {{task.due_at}}
+       <td>
+            {{task.due_at|date:"SHORT_DATE_FORMAT"}}
+       </td> 
+        
+            
+            {% if task.due_at < today %}
+            <td style="background-color: rgb(253, 244, 228); color: orange;">
+            Overdue by {{task.due_at|timesince:today}}
+
+            {% elif task.due_at == today %}   
+            <td>
+            Today!
+            
+            {% else %}
+            <td style="color: rgb(28, 156, 49);">
+            {{task.due_at|timeuntil:today}} from now
+
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
 </div>
+</div>
+
+<!-- hide on lg and wider screens -->
+<div class="d-md-none">
+<div class="list-group">
+    
+    {% for task in task_list|dictsort:"due_at" %}
+    
+    <a class="list-group-item list-group-item-action
+    
+    {% if task.status == 'In progress' %}
+    list-group-item-info
+    {% elif task.status == 'Urgent' %}   
+    list-group-item-danger
+    {% elif task.status == 'Complete' %}   
+    list-group-item-success
+    {% elif task.status == 'Delayed' %}   
+    list-group-item-warning
+    {% else %}
+    list-group-item-secondary
+    {% endif %}
+
+    " href='{% url 'tasks_detail' task.id %}'>
+        
+        {% if task.status == 'In progress' %}
+        <i class="bi bi-circle-half"></i>
+        {% elif task.status == 'Urgent' %}   
+        <i class="bi bi-arrow-up-circle"></i>
+        {% elif task.status == 'Complete' %}   
+        <i class="bi bi-check-circle-fill"></i>
+        {% elif task.status == 'Delayed' %}   
+        <i class="bi bi-clock"></i>
+        {% else %}
+        <i class="bi bi-circle"></i>
+        {% endif %}
+
+        &nbsp;
+        {{ task.title | truncatechars:40}}
+    </a>
+    {% endfor %}
+    
+</div>
+</div>
+
 <!-- <hr/> -->
 {% endblock content %}

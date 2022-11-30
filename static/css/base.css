@@ -1,17 +1,12 @@
 body {
   font-family: "Inter", "Arial", sans-serif;
-  background-color: #ffffff; }
+  font-variant-numeric: tabular-nums; }
 
 h1 {
   font-weight: 700; }
 
-.cen {
-  text-align: center; }
-
-.complete {
-  background-color: #19875450; }
-
-.incomplete {
-  background-color: #dc354550; }
+.table a {
+  text-decoration: none;
+  color: none; }
 
 /*# sourceMappingURL=base.css.map */

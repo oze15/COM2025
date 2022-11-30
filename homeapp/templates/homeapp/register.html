@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% block script %}
+<!-- Script to format all inputs as Bootstrap form buttons - has issues with colllapsible navbar so commented out-->
 <!-- <script type="text/javascript" src="{% static 'js/format.js' %}"></script> -->
 {% endblock script %}
 {% block content %}
 <h1>Sign Up</h1>
+<!-- Prompt user to log in if they have an existing account -->
+<p>Already have an account? <a href="{% url 'login' %}">Login</a> </p>
 <form method="post">
 {% csrf_token %}
 {{ form.as_p }}
-<button type="submit">Sign Up</button>
+<button type="submit" class="btn btn-primary">Sign Up</button>
 </form>
 {% endblock content %}

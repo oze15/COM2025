@@ -1,9 +1,10 @@
 $font: 'Inter', 'Arial', sans-serif;
-$color: #ffffff;
+
 
 body {
     font-family: $font;
-    background-color: $color;
+    // background-color: $color;
+    font-variant-numeric: tabular-nums;
 }
 
 h1 {
@@ -11,14 +12,9 @@ h1 {
     font-weight:700;
 }
 
-.cen{
-    text-align: center;
+.table a
+{
+    // display:block;
+    text-decoration:none;
+    color: none;
 }
-
-.complete{
-    background-color: #19875450;
-    }
-
-.incomplete{
-    background-color: #dc354550;
-    }

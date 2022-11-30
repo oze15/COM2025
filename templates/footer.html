@@ -1,8 +1,13 @@
+
 <footer class="bd-footer p-3 p-md-5 mt-5 bg-light text-center text-sm-center">
     <div class="container">
-      <a class="btn btn-primary btn-sm" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a>
-      <br><br>
+      {% if user.is_authenticated %}
+        <a class="btn btn-primary btn-sm" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a>
+        <br><br>
+      {% endif%}
       <p>toDoList v0.0.1</p>
+      <!-- Logic to tell if logged in or not -->
+      <!-- Displays the login status to the user allowing them to log in and log out -->
       {% if user.is_authenticated %}
         <p>Logged in as {{user.username}}
         (<a href="{% url 'logout' %}">Logout</a>)</p>

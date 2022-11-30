@@ -13,13 +13,19 @@ async function togglecomplete(subtask_id) {
             
             if (response.complete == true) {
                 // Toggle the class on the subtask
-                $("#tid_" + response.tid).removeClass("incomplete");
-                $("#tid_" + response.tid).addClass("complete");
+                $("#tid_" + response.tid).removeClass("list-group-item-danger");
+                $("#tid_" + response.tid).addClass("list-group-item-success");
+
+                $("#tid_" + response.tid + "_i").removeClass("bi-circle");
+                $("#tid_" + response.tid + "_i").addClass("bi-check-circle-fill");
             }
             else {
                 // Toggle the class on the subtask
-                $("#tid_" + response.tid).removeClass("complete");
-                $("#tid_" + response.tid).addClass("incomplete");
+                $("#tid_" + response.tid).removeClass("list-group-item-success");
+                $("#tid_" + response.tid).addClass("list-group-item-danger");
+
+                $("#tid_" + response.tid + "_i").removeClass("bi-check-circle-fill");
+                $("#tid_" + response.tid + "_i").addClass("bi-circle");
             }
         }
     });

@@ -19,6 +19,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tasks/', include('taskapp.urls')),
+    # URL for managing logins
     path('accounts/', include('django.contrib.auth.urls')),
     # Any URLs with '' are passed to homeapp app
     path('', include('homeapp.urls')),

@@ -8,6 +8,7 @@ from .models import Task, SubTask
 from .forms import TaskForm, SubTaskForm
 from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
+import datetime
 
 
 # is @login_required needed?
@@ -20,6 +21,8 @@ def index_view(request):
     # dictionary for initial data with
     # field names as keys
     context ={}
+
+    context["today"] = datetime.date.today()
     
     # add the dictionary during initialization
     # context["task_list"] = Task.objects.all()
@@ -30,19 +33,9 @@ def index_view(request):
         context["task_count"] = Task.objects.all().count
     else:
         context["task_list"] = Task.objects.filter(author=request.user)
-        context["task_count"] = Task.objects.filter(author=request.user).count
+        context["task_count"] = Task.objects.filter(author=request.user).count()
 
     return render(request, "taskapp/index.html", context)
-
-# # pass id attribute from urls
-# def detail_view(request, nid):
-    
-#     context = {}
-    
-#     # add the dictionary during initialization
-#     context["task"] = get_object_or_404(Task, pk=nid)
-    
-#     return render(request, "taskapp/detail_view.html", context)
 
 @login_required
 def create_view(request):
@@ -152,6 +145,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             
             #  get all the subtasks associated with that task
             context['subtask_list'] = SubTask.objects.filter(task__id=self.kwargs['pk'])
+            context['subtask_list_size'] = SubTask.objects.filter(task__id=self.kwargs['pk']).count
         else:
             raise PermissionDenied()
 
