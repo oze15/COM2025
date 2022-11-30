@@ -1,126 +1,162 @@
 from django.test import TestCase
 from django.db.backends.sqlite3.base import IntegrityError
 from django.db import transaction
-from .models import Note, Task
+from .models import Task, SubTask, User
 from django.urls import reverse
 from .forms import TaskForm
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
 # Create your tests here.
 
-
-class NoteTests(TestCase):
-    # @classmethod
-    # def setUpTestData(cls):
-    #     n1 = Note(title='1st Note', description="This is my 1st note")
-    #     n1.save()
-    #     n2 = Note(title='2nd Note', description="This is my 2nd note")
-    #     n2.save()
-    # def test_save_note(self):
-    #     db_count = Note.objects.all().count()
-    #     note = Note(title='new Note', description='New description')
-    #     note.save()
-    #     self.assertEqual(db_count+1, Note.objects.all().count())
-    # def test_duplicate_title(self):
-    #     db_count = Note.objects.all().count()
-    #     note = Note(title='1st Note', description="This is my 1st note")
-    #     #with self.assertRaises(IntegrityError):
-    #     try:
-    #         with transaction.atomic():
-    #             note.save() 
-    #     except IntegrityError:
-    #         pass
-    #     self.assertNotEqual(db_count+1, Note.objects.all().count())
-
-    # def test_post_create(self):
-    #     db_count = Note.objects.all().count()
-    #     data = {
-    #         "title": "new note",
-    #         "description": " new description",
-    #     }
-    #     response = self.client.post(reverse('notes_new'), data=data)
-    #     self.assertEqual(Note.objects.count(), db_count+1)
-
-    # # setup and noe tests here
-    # def test_post_create_task(self):
-    #     note = Note.objects.get(pk=1)
-    #     data = {
-    #         "title": "new task",
-    #         "complete": True,
-    #         "note": note
-    #     }
-        
-    #     form = TaskForm(data)
-    #     self.assertTrue(form.is_valid())
-
-    # def test_post_create_empty_task(self):
-    #     data = {
-    #         "title": "",
-    #         "complete": True,
-    #         "note": Note.objects.get(pk=1)
-    #     }
-    #     form = TaskForm(data)
-    #     self.assertFalse(form.is_valid())
+class TaskTests(TestCase):
 
     @classmethod
-    # Test that your login works
     def setUpTestData(cls):
-        user1 = User(username='user1', email='user1@email.com')
+
+        # Create users
+
+        ## Create user 1
+        user1 = User(
+            username    = 'user1', 
+            email       = 'user1@email.com'
+            )
         user1.set_password('MyPassword123')
         user1.save()
-        user2 = User(username='user2', email='user2@email.com')
+
+        ## Create user 2
+        user2 = User(
+            username    = 'user2', 
+            email       = 'user2@email.com'
+            )
         user2.set_password('MyPassword123')
         user2.save()
         
-        n1 = Note(title='1st Note', description="This is my 1st note", author=user1)
-        n1.save()
-        n2 = Note(title='2nd Note', description="This is my 2nd note", author=user1)
-        n2.save()
-        
+        # Create tasks
+
+        ## Create task 1 for user 1
+        task1 = Task(
+            title       = '1st Task',
+            description = "This is my 1st task", 
+            author      = user1,
+            category    = 'Category 1', 
+            status      = 'Not started',
+            due_at      = '2021-01-01'
+            )
+        # Date needs to be in format YYYY-MM-DD for tests
+        task1.save()
+
+        ## Create task 2 for user 1
+        task2 = Task(
+            title       = '2nd Task',
+            description = "This is my 2nd task", 
+            author      = user1,
+            category    = 'Category 1', 
+            status      = 'Not started',
+            due_at      = '2021-01-01'
+            )
+        task2.save()
+
+    # Is is possible to login?
     def test_login(self):
-        login = self.client.login(username='user1', password='MyPassword123')
+        # Attempt to login with given username and password
+        login = self.client.login(username = 'user1', password = 'MyPassword123')
+        # Was login successful?
         self.assertTrue(login)
 
-    # Add users to your notes tests
-    def test_save_note(self):
-        db_count = Note.objects.all().count()
-        user1=User.objects.get(pk=1)
-        note = Note(title='new Note', description='New description', author=user1)
-        note.save()
-        self.assertEqual(db_count+1, Note.objects.all().count())
+    # Save a note as a user
+    def test_save_task(self):
+        # get current count to check for potential change later
+        db_count = Task.objects.all().count()
+        # get user 1
+        user1 = User.objects.get(pk = 1)
+        # add a new task to database by user 1
+        task = Task(
+            title       = 'New Task', 
+            description = "This is a new task", 
+            author      = user1, 
+            category    = 'Category 1', 
+            status      = 'Not started', 
+            due_at      = '2021-01-01'
+            )
+        task.save()
+        # has the task been added? Will know as number of tasks will increase by 1
+        self.assertEqual(db_count + 1, Task.objects.all().count())
 
+    # Attempt to make a task with a duplicate title
     def test_duplicate_title(self):
-        db_count = Note.objects.all().count()
-        user1=User.objects.get(pk=1)
-        note = Note(title='1st Note', description="This is my 1st note", author=user1)
-        #with self.assertRaises(IntegrityError):
+        # get current count to check for potential change later
+        db_count = Task.objects.all().count()
+        # get user 1
+        user1 = User.objects.get(pk=1)
+        # add a new task to database by user 1
+        task = Task(
+            title       = '1st Task',
+            description = "This is my 1st task", 
+            author      = user1,
+            category    = 'Category 1', 
+            status      = 'Not started',
+            due_at      = '2021-01-01'
+            )
+        # attempt to save task
         try:
             with transaction.atomic():
-                note.save()
+                task.save()
         except IntegrityError:
             pass
-        self.assertNotEqual(db_count+1, Note.objects.all().count())
+        # This shouldn't work so we expect the database to not increase in size by 1,  
+        # i.e. it should be the same size as it was before we started to attempt this
+        self.assertNotEqual(db_count + 1, Task.objects.all().count())
 
-    # Test protected urls when logged in and logged out
-    def test_post_create_note_no_login(self):
-        db_count = Note.objects.all().count()
-        user1=User.objects.get(pk=1)
+# Test protected urls when logged in and logged out
+
+    # What happens when we try to create a task when we haven't logged in?
+    def test_post_create_task_no_login(self):
+        # get current count to check for potential change later
+        db_count = Task.objects.all().count()
+        # get user 1
+        user1 = User.objects.get(pk = 1)
+        # data for a new task with no user but as user 1
         data = {
-            "title": "new note",
-            "description": " new description",
-            "author": user1
+            "title":        "new task",
+            "description":  "new description",
+            "author":       user1,
+            "category":     'Category 1', 
+            "status":       'Not started',
+            "due_at":       '2021-01-01'
         }
-        response = self.client.post(reverse('notes_new'), data=data)
-        self.assertEqual(Note.objects.count(), db_count)
+        response = self.client.post(reverse('tasks_new'), data=data)
+        self.assertEqual(Task.objects.count(), db_count)
     
-    def test_post_create_note_with_login(self):
-        db_count = Note.objects.all().count()
-        user1=User.objects.get(pk=1)
+    # What happens when we try to create a task when we have logged in?
+    def test_post_create_task_with_login(self):
+        # get current count to check for potential change later
+        db_count = Task.objects.all().count()
+        # get user 1
+        user1 = User.objects.get(pk = 1)
+        # Login with username and password as user 1
         login = self.client.login(username='user1', password='MyPassword123')
+        # data for a new task with and as user 1
         data = {
-            "title": "new note",
-            "description": " new description",
-            "author": user1
+            "title":        "new task",
+            "description":  "new description",
+            "author":       user1,
+            "category":     'Category 1', 
+            "status":       'Not started',
+            "due_at":       '2021-01-01'
         }
-        response = self.client.post(reverse('notes_new'), data=data)
-        self.assertEqual(Note.objects.count(), db_count)
+        response = self.client.post(reverse('tasks_new'), data=data)
+        self.assertEqual(Task.objects.count(), db_count)
+
+
+    # try to access user 1 notes as user 2
+
+    '''
+    
+    Create a subtask
+    Toggle complete
+    Toggle incomplete
+    Delete a subtask
+
+    
+
+    '''

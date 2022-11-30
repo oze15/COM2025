@@ -13,20 +13,7 @@
     <!-- <a class="btn btn-primary btn" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a> -->
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-    <div class="col-sm">
-        <div class="card text-white bg-warning mb-3">
-            <div class="card-body">
-            <h1 class="card-title display-1 fw-bold">{{ task_count_delayed }}
-                <span style="float: right;"><i class="bi bi-clock"></i></span></h1>
-            <!-- <p class="card-text">Text</p> -->
-            </div>
-            <div class="card-footer">
-                Delayed
-                <!-- <button class="btn btn-outline text-right" style="float:right;" onClick='#' type='button'><i class="bi bi-square"></i></button> -->
-            </div>
-        </div>
-    </div>
-
+    
     <div class="col-sm">
     <div class="card text-white bg-info mb-3">
         <div class="card-body ">
@@ -51,6 +38,20 @@
             Urgent
         </div>
     </div>
+    </div>
+
+    <div class="col-sm">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+            <h1 class="card-title display-1 fw-bold">{{ task_count_delayed }}
+                <span style="float: right;"><i class="bi bi-clock"></i></span></h1>
+            <!-- <p class="card-text">Text</p> -->
+            </div>
+            <div class="card-footer">
+                Delayed
+                <!-- <button class="btn btn-outline text-right" style="float:right;" onClick='#' type='button'><i class="bi bi-square"></i></button> -->
+            </div>
+        </div>
     </div>
 
     <div class="col-sm">

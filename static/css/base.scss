@@ -1,20 +1,15 @@
 $font: 'Inter', 'Arial', sans-serif;
 
-
 body {
     font-family: $font;
-    // background-color: $color;
     font-variant-numeric: tabular-nums;
 }
 
 h1 {
-    // text-transform: uppercase;
     font-weight:700;
 }
 
 .table a
 {
-    // display:block;
     text-decoration:none;
-    color: none;
 }

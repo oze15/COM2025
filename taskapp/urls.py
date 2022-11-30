@@ -12,8 +12,6 @@ urlpatterns = [
     path('edit/<int:nid>', views.update_view, name='tasks_update'),
     # tasks/delete/id
     path('delete/<int:nid>', views.delete_view, name='tasks_delete'),
-    #tasks/id/subtasks/
-    # path('<int:nid>/subtasks', views.SubTaskListView.as_view(), name='subtask_list'),
     #tasks/id/subtask/new
     path('<int:nid>/subtask/new', views.CreateSubTaskView.as_view(), name='create_subtask'),
     #/tasks/togglecomplete

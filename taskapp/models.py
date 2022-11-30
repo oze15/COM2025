@@ -9,11 +9,11 @@ class Task(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(max_length = 128)
     status = models.CharField(max_length = 128)
-    due_at = models.DateField(blank=True, editable=True)
+    due_at = models.DateField()
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
-    # String method for a subtask will return title
+    # String method for a task will return title
     # This will make them easier to manage in the admin pages
     def __str__(self):
         return self.title
