@@ -10,13 +10,13 @@ Category_Choices = [
     'Complete',
 ]
 
-Status_Choices = [
-    'Not started',
-    'Delayed',
-    'Urgent',
-    'In progress',
-    'Complete',
-]
+STATUS_CHOICES = (
+    ('Not started', 'Not started'),
+    ('Delayed', 'Delayed'),
+    ('Urgent', 'Urgent'),
+    ('In progress', 'In progress'),
+    ('Complete', 'Complete'),
+)
 
 class TaskForm(forms.ModelForm):
     # create meta class
@@ -46,9 +46,8 @@ class TaskForm(forms.ModelForm):
             'placeholder': 'Category',
             }),
 
-            'status': forms.TextInput(attrs={
+            'status': forms.Select(choices=STATUS_CHOICES, attrs={
             'class': 'form-control',
-            'placeholder': 'Status',
             }),
 
             'due_at': forms.SelectDateWidget(attrs={
@@ -56,8 +55,6 @@ class TaskForm(forms.ModelForm):
             # 'placeholder': 'Task Title',
             }),
             'author': forms.HiddenInput(),
-
-
 
 }
 
