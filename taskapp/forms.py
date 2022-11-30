@@ -58,7 +58,7 @@ class TaskForm(forms.ModelForm):
 
 }
 
-# We need a form. We’ll set the task id automatically depending on the url, so let’s hide that field
+# We’ll set the task id automatically depending on the url, so let’s hide that field
 class SubTaskForm(forms.ModelForm):
 # create meta class
     class Meta:

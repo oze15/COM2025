@@ -10,7 +10,6 @@
     <!-- Add message with num of overdue -->
     <h4>Hi {{user.username}}. You have {{ task_count }} task{{ task_count|pluralize }}.</h4>
     <br>
-    <!-- <a class="btn btn-primary btn" href="{% url 'tasks_new' %}" role="button"><i class="bi bi-plus-lg"></i>&nbsp;&nbsp;&nbsp;New Task</a> -->
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
     
@@ -19,7 +18,6 @@
         <div class="card-body ">
         <h1 class="card-title display-1 fw-bold">{{ task_count_in_progress }}
             <span style="float: right;"><i class="bi bi-circle-half"></i></span></h1>
-        <!-- <p class="card-text">Text</p> -->
         </div>
         <div class="card-footer">
             In Progress
@@ -32,7 +30,6 @@
         <div class="card-body">
         <h1 class="card-title display-1 fw-bold">{{ task_count_urgent }}
             <span style="float: right;"><i class="bi bi-arrow-up-circle"></i></span></h1>
-        <!-- <p class="card-text">Text</p> -->
         </div>
         <div class="card-footer">
             Urgent
@@ -45,11 +42,9 @@
             <div class="card-body">
             <h1 class="card-title display-1 fw-bold">{{ task_count_delayed }}
                 <span style="float: right;"><i class="bi bi-clock"></i></span></h1>
-            <!-- <p class="card-text">Text</p> -->
             </div>
             <div class="card-footer">
                 Delayed
-                <!-- <button class="btn btn-outline text-right" style="float:right;" onClick='#' type='button'><i class="bi bi-square"></i></button> -->
             </div>
         </div>
     </div>
@@ -59,7 +54,6 @@
             <div class="card-body">
             <h1 class="card-title display-1 fw-bold">{{ task_count_not_started }}
                 <span style="float: right;"><i class="bi bi-circle"></i></span></h1>
-            <!-- <p class="card-text">Text</p> -->
             </div>
             <div class="card-footer">
                 Not started

@@ -24,10 +24,6 @@ def index_view(request):
 
     context["today"] = datetime.date.today()
     
-    # add the dictionary during initialization
-    # context["task_list"] = Task.objects.all()
-    # context["task_count"] = Task.objects.all().count
-    
     if is_admin(request.user):
         context["task_list"] = Task.objects.all()
         context["task_count"] = Task.objects.all().count
@@ -46,8 +42,6 @@ def create_view(request):
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Task Created')
             return redirect('tasks_index')
-        # elif Task.objects.filter(title=title).exists():
-        #     messages.add_message(request, messages.ERROR, 'Task with this Title already exists')
         else:
             messages.add_message(request, messages.ERROR, 'Invalid Form Data; Task not created')
 
@@ -102,13 +96,6 @@ class CreateSubTaskView(LoginRequiredMixin, CreateView):
 
     template_name = "taskapp/create_view.html"
     
-    # wrapped in 'if' and returns
-    '''
-    ValueError at /tasks/13/subtask/new
-    dictionary update sequence element #0 has length 0; 2 is required
-
-    --> it does stop the user accessing subtasks that aren't their own
-    '''
     def get_initial(self): # set the initial value of our task field
         task = Task.objects.get(id=self.kwargs['nid'])
         if(self.request.user != task.author and not(is_admin(self.request.user))):
@@ -120,12 +107,6 @@ class CreateSubTaskView(LoginRequiredMixin, CreateView):
     def get_success_url(self): # redirect to the task detail view on success
         return reverse_lazy('tasks_detail', kwargs={'pk':self.kwargs['nid']})
 
-'''
-    TypeError at /tasks/13
-    context must be a dict rather than HttpResponseForbidden.
-
-    --> followed 
-    '''
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'taskapp/detail_view.html'
@@ -136,10 +117,6 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
 
         context = {}
         context['task'] = task
-
-        # get the task referred to by pk in the url
-        ## context['subtask_list'] = SubTask.objects.filter(task__id=self.kwargs['pk'])
-        # # context['task'] = Task.objects.get(id=self.kwargs['pk'])
 
         if(self.request.user == task.author or is_admin(self.request.user)):
             
