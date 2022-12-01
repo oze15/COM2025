@@ -56,6 +56,17 @@ class TaskTests(TestCase):
             )
         task2.save()
 
+        ## Create task 3 for user 1
+        task3 = Task(
+            title       = '3rd Task',
+            description = "This is my 3rd task", 
+            author      = user1,
+            category    = 'Category 1', 
+            status      = 'Not started',
+            due_at      = '2021-01-01'
+            )
+        task2.save()
+
     # Is is possible to login?
     def test_login(self):
         # Attempt to login with given username and password
@@ -147,16 +158,44 @@ class TaskTests(TestCase):
         response = self.client.post(reverse('tasks_new'), data=data)
         self.assertEqual(Task.objects.count(), db_count)
 
+    def test_read_task_as_user(self):
+        # get user 2
+        user1 = User.objects.get(pk = 1)
+        # Login with username and password as user 2
+        login = self.client.login(username='user1', password='MyPassword123')
+        # Attempt to read a task belonging to user 1
+        response = self.client.get('/tasks/1')
+        # Should get task page
+        self.assertEqual(response.status_code, 200)
+
+    def test_read_task_as_another_user(self):
+        # get user 2
+        user2 = User.objects.get(pk = 2)
+        # Login with username and password as user 2
+        login = self.client.login(username='user2', password='MyPassword123')
+        # Attempt to read a task belonging to user 1
+        response = self.client.get('/tasks/1')
+        # Should get permission denied
+        self.assertEqual(response.status_code, 403)
+
+    def test_read_task_no_login(self):
+        # Attempt to read a task belonging to user 1
+        response = self.client.get('/tasks/1')
+        # Should be prompted to login
+        self.assertEqual(response.status_code, 302)
+
+
 
     # try to access user 1 notes as user 2
 
     '''
     
-    Create a subtask
-    Toggle complete
-    Toggle incomplete
-    Delete a subtask
+    Create a subtask logged in/out/as another user
+    Toggle complete logged in/out/as another user
+    Toggle incomplete logged in/out/as another user
+    Delete a subtask logged in/out/as another user
 
-    
+    Update a task logged in/out/as another user
+    Delete a task logged in/out/as another user
 
     '''

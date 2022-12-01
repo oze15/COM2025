@@ -52,12 +52,19 @@ class HomePageTests(TestCase):
             )
         task2.save()
     
-    # def test_contact(self):
-    #     response = self.client.get(reverse('contact'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertContains(response, 'This is my header')
-    #     self.assertContains(response, 'Contact Us')
-    #     self.assertContains(response, 'This is my footer')
+    def test_contact(self):
+        response = self.client.get(reverse('contact'))
+        self.assertEqual(response.status_code, 200)
+        # NAVBAR TEST
+        # Check navbar is shown on feedback page
+        self.assertContains(response, 'Home')
+        # Test that contact.html main body is shown
+        self.assertContains(response, 'Send Feedback')
+        # Test that form is rendered correctly
+        self.assertContains(response, 'What would you like to change?')
+        # FOOTER TEST
+        # Test that footer is shown on contact page
+        self.assertContains(response, 'toDoList v0.0.1')
 
 #   Logged out tests
     # Can I see the jumbotron?
