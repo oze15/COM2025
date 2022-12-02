@@ -1,15 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 class Task(models.Model):
+    # It shouldn't be possible to make another task with the same title
     title = models.CharField(max_length = 128, unique=True)
     description = models.TextField()
+    # is assigned only once, and not customisable in form
     created_at = models.DateTimeField(auto_now_add=True)
+    # updates every time the task is edited using the edit view
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(max_length = 128)
     status = models.CharField(max_length = 128)
-    due_at = models.DateField()
+    due_at = models.DateField(null=True, blank=True)
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
