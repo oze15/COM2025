@@ -20,7 +20,7 @@ def is_admin(user):
 def index_view(request):
     # dictionary for initial data with
     # field names as keys
-    context ={}
+    context = {}
 
     context["today"] = datetime.date.today()
     
@@ -35,7 +35,7 @@ def index_view(request):
 
 @login_required
 def create_view(request):
-    context ={}
+    context = {}
     form = TaskForm(request.POST or None, initial={'author': request.user})
     if(request.method == 'POST'):
         if form.is_valid():
@@ -45,12 +45,12 @@ def create_view(request):
         else:
             messages.add_message(request, messages.ERROR, 'Invalid Form Data; Task not created')
 
-    context['form']= form
+    context['form'] = form
     return render(request, "taskapp/create_view.html", context)
 
 @login_required
 def update_view(request, nid):
-    context ={}
+    context = {}
     
     # fetch the object related to passed id
     obj = get_object_or_404(Task, id = nid)
@@ -67,7 +67,6 @@ def update_view(request, nid):
         form.save()
         messages.add_message(request, messages.SUCCESS, 'Task Updated')
 
-        # causes an error
         return redirect('tasks_detail', pk = nid)
     
     # add form dictionary to context

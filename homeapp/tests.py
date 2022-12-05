@@ -2,6 +2,7 @@ from urllib import response
 from django.test import TestCase
 from taskapp.models import Task, SubTask, User
 from django.urls import reverse
+from django.core import mail
 
 # Create your tests here.
 class HomePageTests(TestCase):
@@ -51,7 +52,42 @@ class HomePageTests(TestCase):
             due_at      = '2021-01-01'
             )
         task2.save()
+
+    # Can I see the jumbotron?
+    def test_homepage_logged_out(self):
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200)
+        # NAVBAR TEST
+        # When there is no logged in user, the tasks link in the navbar should not be shown
+        # so if is not seen then we know the logic in the navbar is fine
+        self.assertNotContains(response, 'Tasks')
+        # MAIN BODY TEST
+        # This is part of the jumbotron style div that is shown only when not logged in
+        self.assertContains(response, 'The only task management solution.')
+        # Another part of the jumbotron style div
+        self.assertContains(response, 'toDoList is a brand new task management app made for the 21st century human.')
+        # FOOTER TEST
+        # Test that the right footer information is shown when there isn't a user logged in
+        self.assertContains(response, 'No account?')
     
+    def test_homepage_logged_in(self):
+        login = self.client.login(username = 'user1', password = 'MyPassword123')
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200)
+        # NAVBAR TEST
+        # When there is a logged in user, the tasks link in the navbar should be shown
+        self.assertContains(response, 'Tasks')
+        # MAIN BODY TEST
+        # This is part of the jumbotron style div that is shown only when not logged in
+        # so we test here that we can't see it if logged in
+        self.assertNotContains(response, 'The only task management solution.')
+        self.assertContains(response, 'Delayed')
+        # FOOTER TEST
+        # Test that the right footer information is shown when there is a logged in user
+        # we know the logic is correct, as the following phrase will be in the footer
+        self.assertContains(response, 'Logged in as')
+
+
     def test_contact(self):
         response = self.client.get(reverse('contact'))
         self.assertEqual(response.status_code, 200)
@@ -66,47 +102,14 @@ class HomePageTests(TestCase):
         # Test that footer is shown on contact page
         self.assertContains(response, 'toDoList v0.0.1')
 
-#   Logged out tests
-    # Can I see the jumbotron?
-    def test_homepage_logged_out(self):
-        response = self.client.get('')
-        self.assertEqual(response.status_code, 200)
-
-        # NAVBAR TEST
-        # When there is no logged in user, the tasks link in the navbar should not be shown
-        # so if is not seen then we know the logic in the navbar is fine
-        self.assertNotContains(response, 'Tasks')
+    def test_mailer(self):
+        data = {
+            "name":         "Alice Bob",
+            "subject":      "A message through the mailer",
+            "email":        "hello@world.com",
+            "message":      "Hello world!"
+        }
         
-        # MAIN BODY TEST
-        # This is part of the jumbotron style div that is shown only when not logged in
-        self.assertContains(response, 'The only task management solution.')
-        # Another part of the jumbotron style div
-        self.assertContains(response, 'toDoList is a brand new task management app made for the 21st century human.')
-        
-        # FOOTER TEST
-        # Test that the right footer information is shown when there isn't a user logged in
-        self.assertContains(response, 'No account?')
-    
-    
-#   Logged in tests
-    def test_homepage_logged_in(self):
-
-        login = self.client.login(username = 'user1', password = 'MyPassword123')
-        response = self.client.get('')
-
-        self.assertEqual(response.status_code, 200)
-
-        # NAVBAR TEST
-        # When there is a logged in user, the tasks link in the navbar should be shown
-        self.assertContains(response, 'Tasks')
-        
-        # MAIN BODY TEST
-        # This is part of the jumbotron style div that is shown only when not logged in
-        # so we test here that we can't see it if logged in
-        self.assertNotContains(response, 'The only task management solution.')
-        self.assertContains(response, 'Delayed')
-        
-        # FOOTER TEST
-        # Test that the right footer information is shown when there is a logged in user
-        # we know the logic is correct, as the following phrase will be in the footer
-        self.assertContains(response, 'Logged in as')
+        response = self.client.post(reverse('contact'), data=data, follow=True)
+        self.assertContains(response, 'Message Sent')
+        self.assertIn("Hello world!", mail.outbox[0].body)

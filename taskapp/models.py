@@ -13,7 +13,7 @@ class Task(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(max_length = 128)
     status = models.CharField(max_length = 128)
-    due_at = models.DateField(null=True, blank=True)
+    due_at = models.DateField()
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
