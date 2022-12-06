@@ -23,7 +23,7 @@
 <!-- hide on screens smaller than lg -->
 <div class="d-none d-md-block">
 <div class="table-responsive">
-<table class="table table-hover" style="border-color: white;">
+<table class="table table-hover">
     <thead>
     <tr>
         <th><i class="bi bi-square-fill text-white"></i>&nbsp;&nbsp;&nbsp;Title</th>
@@ -71,7 +71,7 @@
         
             
             {% if task.due_at < today %}
-            <td style="background-color: rgb(253, 244, 228); color: orange;">
+            <td class="overdue">
             Overdue by {{task.due_at|timesince:today}}
 
             {% elif task.due_at == today %}   
@@ -79,7 +79,7 @@
             Today!
             
             {% else %}
-            <td style="color: rgb(28, 156, 49);">
+            <td class="soon">
             {{task.due_at|timeuntil:today}} from now
 
             {% endif %}

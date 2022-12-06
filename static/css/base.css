@@ -8,4 +8,11 @@ h1 {
 .table a {
   text-decoration: none; }
 
+.table .overdue {
+  background-color: #fdf4e4;
+  color: orange; }
+
+.table .soon {
+  color: #1c9c31; }
+
 /*# sourceMappingURL=base.css.map */
