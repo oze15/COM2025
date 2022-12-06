@@ -53,7 +53,7 @@ class HomePageTests(TestCase):
             )
         task2.save()
 
-    # Can I see the jumbotron?
+    # Can I see the "jumbotron"?
     def test_homepage_logged_out(self):
         response = self.client.get('')
         self.assertEqual(response.status_code, 200)
@@ -85,8 +85,7 @@ class HomePageTests(TestCase):
         # FOOTER TEST
         # Test that the right footer information is shown when there is a logged in user
         # we know the logic is correct, as the following phrase will be in the footer
-        self.assertContains(response, 'Logged in as')
-
+        self.assertContains(response, 'Logged in as user1')
 
     def test_contact(self):
         response = self.client.get(reverse('contact'))
@@ -102,7 +101,10 @@ class HomePageTests(TestCase):
         # Test that footer is shown on contact page
         self.assertContains(response, 'toDoList v0.0.1')
 
-    def test_mailer(self):
+    def test_mailer_valid(self):
+        # get current count to check for potential change later
+        m_count = len(mail.outbox)
+
         data = {
             "name":         "Alice Bob",
             "subject":      "A message through the mailer",
@@ -113,3 +115,19 @@ class HomePageTests(TestCase):
         response = self.client.post(reverse('contact'), data=data, follow=True)
         self.assertContains(response, 'Message Sent')
         self.assertIn("Hello world!", mail.outbox[0].body)
+        self.assertEqual(len(mail.outbox), m_count + 1)
+
+    def test_mailer_invalid(self):
+        # get current count to check for potential change later
+        m_count = len(mail.outbox)
+
+        data = {
+            "name":         "Alice Bob",
+            "subject":      "A message through the mailer",
+            "email":        "hello@world",
+            "message":      "Hello world!"
+        }
+        
+        response = self.client.post(reverse('contact'), data=data, follow=True)
+        self.assertContains(response, 'Invalid Form Data; Message Not Sent')
+        self.assertNotEqual(len(mail.outbox), m_count + 1)
